@@ -1,16 +1,25 @@
 package db
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
 	"url-shortener/config"
 )
 
-// TestGetDB tests GetDB function
-func TestGetDB(t *testing.T) {
+// TestMain initializes test database and performs cleanup after tests are done
+func TestMain(m *testing.M) {
+	// load configurations
 	conf := config.GetConfig("config", "../config", "json")
-	Init(conf.DatabaseAddress())
 
-	database := GetDB()
-	require.NotEmpty(t, database)
+	// init database
+	Init(conf.TestDatabaseAddress())
+	db := GetDB()
+
+	// cleanup database
+	defer db.db.Exec("DELETE FROM urls")
+
+	// migrate database schema
+	db.Migrate()
+
+	// run tests
+	m.Run()
 }
