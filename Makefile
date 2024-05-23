@@ -7,5 +7,11 @@ createdb:
 dropdb:
 	docker exec -it postgres-container dropdb url_shortener
 
+createtestdb:
+	docker exec -it postgres-container createdb --username=root --owner=root url_shortener_test
+
+droptestdb:
+	docker exec -it postgres-container dropdb url_shortener_test
+
 test:
 	go test -v --cover ./...
