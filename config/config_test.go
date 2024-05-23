@@ -7,8 +7,7 @@ import (
 
 // TestGetConfig tests GetConfig function
 func TestGetConfig(t *testing.T) {
-	configs, err := GetConfig("config_test", "./", "json")
-	require.NoError(t, err)
+	configs := GetConfig("config_test", "./config", "json")
 	require.NotEmpty(t, configs)
 
 	require.Equal(
