@@ -20,4 +20,9 @@ func TestGetConfig(t *testing.T) {
 		"postgresql://****:****@localhost:5432/url_shortener_test?sslmode=disable",
 		configs.TestDatabaseAddress(),
 	)
+	require.Equal(
+		t,
+		":8080",
+		configs.ServerAddress(),
+	)
 }

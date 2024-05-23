@@ -9,6 +9,12 @@ import (
 type config struct {
 	databaseAddress     string // connection address of the database
 	testDatabaseAddress string // connection address of the test database
+	serverAddress       string // api server address
+}
+
+// ServerAddress returns api server address
+func (c config) ServerAddress() string {
+	return c.serverAddress
 }
 
 // TestDatabaseAddress returns test database address
@@ -39,6 +45,7 @@ func GetConfig(configName string, configPath string, configType string) *config 
 	configs := config{
 		databaseAddress:     viper.Get("DATABASE_ADDRESS").(string),
 		testDatabaseAddress: viper.Get("TEST_DATABASE_ADDRESS").(string),
+		serverAddress:       viper.Get("SERVER_ADDRESS").(string),
 	}
 
 	return &configs
