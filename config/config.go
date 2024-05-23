@@ -7,7 +7,13 @@ import (
 
 // config holds config variables
 type config struct {
-	databaseAddress string // connection address of the database
+	databaseAddress     string // connection address of the database
+	testDatabaseAddress string // connection address of the test database
+}
+
+// TestDatabaseAddress returns test database address
+func (c config) TestDatabaseAddress() string {
+	return c.testDatabaseAddress
 }
 
 // DatabaseAddress returns database address
@@ -31,7 +37,8 @@ func GetConfig(configName string, configPath string, configType string) *config 
 	}
 
 	configs := config{
-		databaseAddress: viper.Get("DATABASE_ADDRESS").(string),
+		databaseAddress:     viper.Get("DATABASE_ADDRESS").(string),
+		testDatabaseAddress: viper.Get("TEST_DATABASE_ADDRESS").(string),
 	}
 
 	return &configs

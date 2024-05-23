@@ -1,3 +1,4 @@
 {
-  "DATABASE_ADDRESS": "postgresql://****:****@localhost:5432/url_shortener?sslmode=disable"
+  "DATABASE_ADDRESS": "postgresql://****:****@localhost:5432/url_shortener?sslmode=disable",
+  "TEST_DATABASE_ADDRESS": "postgresql://****:****@localhost:5432/url_shortener_test?sslmode=disable"
 }
