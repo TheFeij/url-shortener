@@ -23,3 +23,7 @@ func init() {
 		panic(fmt.Errorf("unable to start a connection to dataabse: %w", err))
 	}
 }
+
+func GetDB() *database {
+	return &db
+}
