@@ -4,26 +4,26 @@ import (
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"url-shortener/config"
 )
 
+// database holds gorm.database and methods to interact with the database
 type database struct {
 	db *gorm.DB
 }
 
+// singleton instance of database
 var db database
 
-func init() {
-	// load configs
-	conf := config.GetConfig("config", "../config", "json")
-
+// Init initializes singleton instance of database. connects to the database with the input address
+func Init(address string) {
 	var err error
-	db.db, err = gorm.Open(postgres.Open(conf.DatabaseAddress()), &gorm.Config{})
+	db.db, err = gorm.Open(postgres.Open(address), &gorm.Config{})
 	if err != nil {
 		panic(fmt.Errorf("unable to start a connection to dataabse: %w", err))
 	}
 }
 
+// GetDB returns singleton instance of the database
 func GetDB() *database {
 	return &db
 }
