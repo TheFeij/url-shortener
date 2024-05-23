@@ -6,3 +6,6 @@ createdb:
 
 dropdb:
 	docker exec -it postgres-container dropdb url_shortener
+
+test:
+	go test -v --cover ./...
