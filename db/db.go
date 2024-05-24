@@ -20,8 +20,10 @@ func Init(address string) {
 	var err error
 	db.db, err = gorm.Open(postgres.Open(address), &gorm.Config{})
 	if err != nil {
-		panic(fmt.Errorf("unable to start a connection to dataabse: %w", err))
+		panic(fmt.Errorf("unable to start a connection to databse: %w", err))
 	}
+
+	db.migrate()
 }
 
 // GetDB returns singleton instance of the database
@@ -29,10 +31,10 @@ func GetDB() *database {
 	return &db
 }
 
-// Migrate automatically migrates the database schemas for the registered models.
+// migrate automatically migrates the database schemas for the registered models.
 //
 // It uses GORM's AutoMigrate function, which will create tables, missing columns, and missing indexes
 // without deleting any existing data.
-func (db *database) Migrate() {
-	db.db.AutoMigrate(&models.Url{})
+func (d database) migrate() {
+	d.db.AutoMigrate(&models.Url{})
 }
