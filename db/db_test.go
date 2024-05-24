@@ -18,7 +18,7 @@ func TestMain(m *testing.M) {
 	defer db.db.Exec("DELETE FROM urls")
 
 	// migrate database schema
-	db.Migrate()
+	db.migrate()
 
 	// run tests
 	m.Run()
