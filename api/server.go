@@ -21,15 +21,20 @@ var once sync.Once
 // Init initializes singleton instance of server
 func Init(address string) {
 	once.Do(func() {
+		// instance a new gin router
 		router := gin.New()
 
+		// add middlewares
 		router.Use(gin.Recovery())
 		router.Use(gin.Logger())
 
+		// add route handlers
 		router.GET("/", func(context *gin.Context) {
 			context.String(http.StatusOK, "Welcome!")
 		})
+		router.POST("/shorten", shortenUrl)
 
+		// initialize singleton server object
 		apiServer = server{
 			router:  router,
 			address: address,
