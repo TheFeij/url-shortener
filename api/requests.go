@@ -1,4 +1,4 @@
-package io
+package api
 
 // ShortenUrlRequest represents a request to shorten a url
 type ShortenUrlRequest struct {

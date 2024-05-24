@@ -1,4 +1,4 @@
-package io
+package api
 
 // ShortenUrlResponse represents a response to shorten url
 type ShortenUrlResponse struct {
