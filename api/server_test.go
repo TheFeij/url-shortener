@@ -41,7 +41,7 @@ func newTestServer(dbService service.DBService) *server {
 
 // TestHomePage tests "/" route of the api server
 func TestHomePage(t *testing.T) {
-	server := GetServer()
+	server := newTestServer(nil)
 
 	req, err := http.NewRequest(http.MethodGet, "/", nil)
 	require.NoError(t, err)
