@@ -4,12 +4,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"sync"
+	"url-shortener/db/service"
 )
 
 // server holds router
 type server struct {
-	router  *gin.Engine
-	address string
+	router    *gin.Engine
+	address   string
+	dbService service.DBService
 }
 
 // singleton instance of server
@@ -19,7 +21,7 @@ var apiServer server
 var once sync.Once
 
 // Init initializes singleton instance of server
-func Init(address string) {
+func Init(dbService service.DBService, address string) {
 	once.Do(func() {
 		// instance a new gin router
 		router := gin.New()
@@ -36,8 +38,9 @@ func Init(address string) {
 
 		// initialize singleton server object
 		apiServer = server{
-			router:  router,
-			address: address,
+			router:    router,
+			dbService: dbService,
+			address:   address,
 		}
 	})
 }
