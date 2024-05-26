@@ -23,3 +23,20 @@ func (s SaveUrlRequest) OriginalUrl() string {
 func (s SaveUrlRequest) ShortUrl() string {
 	return s.shortUrl
 }
+
+// GetOriginalUrlRequest represents a service request to get the original url
+// relative to the short url
+type GetOriginalUrlRequest struct {
+	// ShortUrl shortened url
+	shortUrl string
+}
+
+// NewGetOriginalUrlRequest return a new GetOriginalUrlRequest
+func NewGetOriginalUrlRequest(shortUrl string) *GetOriginalUrlRequest {
+	return &GetOriginalUrlRequest{shortUrl: shortUrl}
+}
+
+// ShortUrl getter for shortUrl
+func (g GetOriginalUrlRequest) ShortUrl() string {
+	return g.shortUrl
+}
