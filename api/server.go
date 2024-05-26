@@ -30,18 +30,18 @@ func Init(dbService service.DBService, address string) {
 		router.Use(gin.Recovery())
 		router.Use(gin.Logger())
 
-		// add route handlers
-		router.GET("/", func(context *gin.Context) {
-			context.String(http.StatusOK, "Welcome!")
-		})
-		router.POST("/shorten", shortenUrl)
-
 		// initialize singleton server object
 		apiServer = server{
 			router:    router,
 			dbService: dbService,
 			address:   address,
 		}
+
+		// add route handlers
+		apiServer.router.GET("/", func(context *gin.Context) {
+			context.String(http.StatusOK, "Welcome!")
+		})
+		apiServer.router.POST("/shorten", apiServer.shortenUrl)
 	})
 }
 
