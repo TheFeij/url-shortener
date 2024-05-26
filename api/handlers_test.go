@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
+	"gorm.io/gorm"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -135,6 +136,113 @@ func TestShortenUrl(t *testing.T) {
 
 			// create http request
 			httpReq, err := http.NewRequest(http.MethodPost, "/shorten", bytes.NewBuffer(requestBody))
+
+			recorder := httptest.NewRecorder()
+			require.NotEmpty(t, recorder)
+
+			server.router.ServeHTTP(recorder, httpReq)
+
+			testCase.checkResponse(t, recorder)
+		})
+	}
+}
+
+// TestRedirectShortUrl tests redirectShortUrl handler function
+func TestRedirectShortUrl(t *testing.T) {
+	// assume we have this record in the database in the urls table
+	urlRecord := models.Url{
+		OriginalUrl: "http://example.test",
+		ShortUrl:    util.GenerateShortUrl(),
+	}
+
+	testCases := []struct {
+		name          string
+		req           RedirectShortUrl
+		buildStubs    func(dbService *mockdb.MockDBService, req RedirectShortUrl)
+		checkResponse func(t *testing.T, recorder *httptest.ResponseRecorder)
+	}{
+		{
+			name: "OK",
+			req:  RedirectShortUrl{ShortUrl: urlRecord.ShortUrl},
+			buildStubs: func(dbService *mockdb.MockDBService, req RedirectShortUrl) {
+				dbService.
+					EXPECT().
+					GetOriginalUrl(service.NewGetOriginalUrlRequest(req.ShortUrl)).
+					Return(service.NewGetOriginalResponse(urlRecord.OriginalUrl), nil).
+					Times(1)
+			},
+			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
+				// check status code
+				require.Equal(t, http.StatusPermanentRedirect, recorder.Code)
+				// check redirection
+				require.Equal(t, urlRecord.OriginalUrl, recorder.Header().Get("Location"))
+			},
+		},
+		{
+			name: "BadRequest",
+			req:  RedirectShortUrl{ShortUrl: "invalid short url"},
+			buildStubs: func(dbService *mockdb.MockDBService, req RedirectShortUrl) {
+				dbService.
+					EXPECT().
+					GetOriginalUrl(gomock.Any()).
+					Times(0)
+			},
+			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
+				// check status code
+				require.Equal(t, http.StatusBadRequest, recorder.Code)
+			},
+		},
+		{
+			name: "NotFound",
+			req:  RedirectShortUrl{ShortUrl: urlRecord.ShortUrl},
+			buildStubs: func(dbService *mockdb.MockDBService, req RedirectShortUrl) {
+				dbService.
+					EXPECT().
+					GetOriginalUrl(service.NewGetOriginalUrlRequest(req.ShortUrl)).
+					Return(nil, gorm.ErrRecordNotFound).
+					Times(1)
+			},
+			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
+				// check status code
+				require.Equal(t, http.StatusNotFound, recorder.Code)
+			},
+		},
+		{
+			name: "InternalServerError",
+			req:  RedirectShortUrl{ShortUrl: urlRecord.ShortUrl},
+			buildStubs: func(dbService *mockdb.MockDBService, req RedirectShortUrl) {
+				dbService.
+					EXPECT().
+					GetOriginalUrl(service.NewGetOriginalUrlRequest(req.ShortUrl)).
+					Return(nil, sql.ErrConnDone).
+					Times(1)
+			},
+			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
+				// check status code
+				require.Equal(t, http.StatusInternalServerError, recorder.Code)
+			},
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			// get a new gomock controller
+			controller := gomock.NewController(t)
+			defer controller.Finish()
+
+			// get an instance of the MockDBService (mock implementation of service.DBService interface)
+			dbService := mockdb.NewMockDBService(controller)
+
+			// build stubs
+			testCase.buildStubs(dbService, testCase.req)
+
+			// get a new test server
+			server := newTestServer(dbService)
+
+			// create http request
+			url := fmt.Sprintf("/redirect/%s", testCase.req.ShortUrl)
+			httpReq, err := http.NewRequest(http.MethodGet, url, nil)
+			require.NoError(t, err)
 
 			recorder := httptest.NewRecorder()
 			require.NotEmpty(t, recorder)
