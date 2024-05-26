@@ -45,6 +45,15 @@ func Init(dbService service.DBService, address string) {
 	})
 }
 
+// addRouteHandlers add route handlers to apiServer's router
+func (s *server) addRouteHandlers() {
+	s.router.GET("/", func(context *gin.Context) {
+		context.String(http.StatusOK, "Welcome!")
+	})
+	s.router.POST("/shorten", s.shortenUrl)
+	s.router.GET("/redirect/:short_url", s.redirectShortUrl)
+}
+
 // GetServer returns singleton instance of server
 func GetServer() *server {
 	return &apiServer
