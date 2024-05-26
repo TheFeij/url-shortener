@@ -3,12 +3,12 @@ package db
 import (
 	"github.com/stretchr/testify/require"
 	"testing"
-	"url-shortener/db/store"
+	"url-shortener/db/service"
 )
 
 func TestDatabase_SaveUrl(t *testing.T) {
 	db := GetDB()
-	req := store.NewSaveUrlRequest("original url", "short url")
+	req := service.NewSaveUrlRequest("original url", "short url")
 
 	res, err := db.SaveUrl(req)
 	require.NoError(t, err)
