@@ -6,7 +6,7 @@ import (
 )
 
 // SaveUrl creates a models.Url instance from (req SaveUrlRequest) and saves it into the database
-// returns an error instance if any
+// returns an error if any
 func (d database) SaveUrl(req *service.SaveUrlRequest) (*service.SaveUrlResponse, error) {
 	// create model instance
 	record := models.Url{
@@ -27,4 +27,16 @@ func (d database) SaveUrl(req *service.SaveUrlRequest) (*service.SaveUrlResponse
 
 	// return results
 	return response, nil
+}
+
+// GetOriginalUrl retrieves the original url of a short url from the database
+// returns an error if any
+func (d database) GetOriginalUrl(req *service.GetOriginalUrlRequest) (*service.GetOriginalUrlResponse, error) {
+	var urlRecord models.Url
+
+	if err := d.db.First(&urlRecord, "short_url = ?", req.ShortUrl()).Error; err != nil {
+		return nil, err
+	}
+
+	return service.NewGetOriginalResponse(urlRecord.OriginalUrl), nil
 }
