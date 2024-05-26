@@ -2,12 +2,12 @@ package db
 
 import (
 	"url-shortener/db/models"
-	"url-shortener/db/store"
+	"url-shortener/db/service"
 )
 
 // SaveUrl creates a models.Url instance from (req SaveUrlRequest) and saves it into the database
 // returns an error instance if any
-func (d database) SaveUrl(req *store.SaveUrlRequest) (*store.SaveUrlResponse, error) {
+func (d database) SaveUrl(req *service.SaveUrlRequest) (*service.SaveUrlResponse, error) {
 	// create model instance
 	record := models.Url{
 		OriginalUrl: req.OriginalUrl(),
@@ -20,7 +20,7 @@ func (d database) SaveUrl(req *store.SaveUrlRequest) (*store.SaveUrlResponse, er
 	}
 
 	// create a response instance
-	response := store.NewSaveUrlResponse(
+	response := service.NewSaveUrlResponse(
 		record.OriginalUrl,
 		record.ShortUrl,
 	)
