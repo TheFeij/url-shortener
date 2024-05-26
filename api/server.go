@@ -38,10 +38,7 @@ func Init(dbService service.DBService, address string) {
 		}
 
 		// add route handlers
-		apiServer.router.GET("/", func(context *gin.Context) {
-			context.String(http.StatusOK, "Welcome!")
-		})
-		apiServer.router.POST("/shorten", apiServer.shortenUrl)
+		apiServer.addRouteHandlers()
 	})
 }
 
