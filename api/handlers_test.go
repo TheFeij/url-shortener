@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	apiio "url-shortener/api/io"
 )
 
 // TestShortenUrl tests shortenUrl handler function
@@ -18,18 +17,18 @@ func TestShortenUrl(t *testing.T) {
 
 	testCases := []struct {
 		name          string
-		req           apiio.ShortenUrlRequest
-		checkResponse func(t *testing.T, req apiio.ShortenUrlRequest, recorder *httptest.ResponseRecorder)
+		req           ShortenUrlRequest
+		checkResponse func(t *testing.T, req ShortenUrlRequest, recorder *httptest.ResponseRecorder)
 	}{
 		{
 			name: "OK",
-			req:  apiio.ShortenUrlRequest{URL: "https://example.test"},
-			checkResponse: func(t *testing.T, req apiio.ShortenUrlRequest, recorder *httptest.ResponseRecorder) {
+			req:  ShortenUrlRequest{URL: "https://example.test"},
+			checkResponse: func(t *testing.T, req ShortenUrlRequest, recorder *httptest.ResponseRecorder) {
 				// check status code
 				require.Equal(t, http.StatusOK, recorder.Code)
 
 				// convert body from json to apiio.ShortenUrlResponse
-				var response apiio.ShortenUrlResponse
+				var response ShortenUrlResponse
 
 				jsonBody, err := io.ReadAll(recorder.Body)
 				require.NoError(t, err)
@@ -44,8 +43,8 @@ func TestShortenUrl(t *testing.T) {
 		},
 		{
 			name: "BadRequest",
-			req:  apiio.ShortenUrlRequest{URL: "example.test"}, // invalid url
-			checkResponse: func(t *testing.T, req apiio.ShortenUrlRequest, recorder *httptest.ResponseRecorder) {
+			req:  ShortenUrlRequest{URL: "example.test"}, // invalid url
+			checkResponse: func(t *testing.T, req ShortenUrlRequest, recorder *httptest.ResponseRecorder) {
 				// check status code
 				require.Equal(t, http.StatusBadRequest, recorder.Code)
 			},
