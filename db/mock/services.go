@@ -39,6 +39,21 @@ func (m *MockDBService) EXPECT() *MockDBServiceMockRecorder {
 	return m.recorder
 }
 
+// GetOriginalUrl mocks base method.
+func (m *MockDBService) GetOriginalUrl(arg0 *service.GetOriginalUrlRequest) (*service.GetOriginalUrlResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetOriginalUrl", arg0)
+	ret0, _ := ret[0].(*service.GetOriginalUrlResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOriginalUrl indicates an expected call of GetOriginalUrl.
+func (mr *MockDBServiceMockRecorder) GetOriginalUrl(arg0 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOriginalUrl", reflect.TypeOf((*MockDBService)(nil).GetOriginalUrl), arg0)
+}
+
 // SaveUrl mocks base method.
 func (m *MockDBService) SaveUrl(arg0 *service.SaveUrlRequest) (*service.SaveUrlResponse, error) {
 	m.ctrl.T.Helper()
