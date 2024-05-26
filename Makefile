@@ -13,5 +13,8 @@ createtestdb:
 droptestdb:
 	docker exec -it postgres-container dropdb url_shortener_test
 
+mockdb:
+	mockgen -package mockdb -destination db/mock/services.go url-shortener/db/service DBService
+
 test:
 	go test -v --cover ./...
