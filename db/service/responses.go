@@ -22,3 +22,19 @@ func (s SaveUrlResponse) OriginalUrl() string {
 func (s SaveUrlResponse) ShortUrl() string {
 	return s.shortUrl
 }
+
+// GetOriginalUrlResponse represents the response to a GetOriginalUrlRequest
+type GetOriginalUrlResponse struct {
+	// originalUrl original url
+	originalUrl string
+}
+
+// NewGetOriginalResponse return a new GetOriginalUrlRequest
+func NewGetOriginalResponse(originalUrl string) *GetOriginalUrlResponse {
+	return &GetOriginalUrlResponse{originalUrl: originalUrl}
+}
+
+// OriginalUrl getter for originalUrl
+func (g GetOriginalUrlResponse) OriginalUrl() string {
+	return g.originalUrl
+}
