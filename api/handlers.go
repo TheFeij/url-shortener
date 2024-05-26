@@ -1,30 +1,39 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"url-shortener/api/io"
+	"url-shortener/db/service"
+	"url-shortener/util"
 )
 
 // shortenUrl shortens URLs
-func shortenUrl(context *gin.Context) {
+func (s *server) shortenUrl(context *gin.Context) {
 	// receive request
-	var req io.ShortenUrlRequest
+	var req ShortenUrlRequest
 	if err := context.ShouldBindJSON(&req); err != nil {
 		context.JSON(http.StatusBadRequest, errResponse(err))
+		return
 	}
 
-	// TODO: shorten url
+	// generate a short url
+	shortUrl := util.GenerateShortUrl()
 
-	// TODO: store in database
+	// service record in the database
+	res, err := s.dbService.SaveUrl(service.NewSaveUrlRequest(req.URL, shortUrl))
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, errResponse(fmt.Errorf("something went wrong. try again")))
+		return
+	}
 
 	// create response
-	response := io.ShortenUrlResponse{
-		OriginalUrl: req.URL,
-		ShortUrl:    "short url",
+	response := ShortenUrlResponse{
+		OriginalUrl: res.OriginalUrl(),
+		ShortUrl:    res.ShortUrl(),
 	}
 
-	// send response to client
+	// send response to the client
 	context.JSON(http.StatusOK, response)
 }
 
