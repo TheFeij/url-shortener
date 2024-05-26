@@ -75,6 +75,6 @@ Response:
 ### Redirect to the Original URL
 Access the shortened URL in the browser or via a GET request to be redirected.
 
-### API Endpoints
+## API Endpoints
 - POST /shorten: Shorten a URL.
 - GET /:shortUrl: Redirect to the original URL
