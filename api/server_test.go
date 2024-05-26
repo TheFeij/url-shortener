@@ -13,17 +13,7 @@ import (
 
 // TestMain initializes test database and api server before running tests
 func TestMain(m *testing.M) {
-	// load configs
-	configs := config.GetConfig("config", "../config", "json")
-
-	// init database
-	db.Init(configs.TestDatabaseAddress())
-
-	// set gin mode to test mode
 	gin.SetMode(gin.TestMode)
-
-	// initialize the server
-	Init(configs.ServerAddress())
 
 	os.Exit(m.Run())
 }
