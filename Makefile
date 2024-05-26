@@ -16,5 +16,8 @@ droptestdb:
 mockdb:
 	mockgen -package mockdb -destination db/mock/services.go url-shortener/db/service DBService
 
+start:
+	go run ./main.go
+
 test:
 	go test -v --cover ./...
