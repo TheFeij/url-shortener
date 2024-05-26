@@ -34,10 +34,7 @@ func newTestServer(dbService service.DBService) *server {
 	}
 
 	// add route handlers
-	testServer.router.GET("/", func(context *gin.Context) {
-		context.String(http.StatusOK, "Welcome!")
-	})
-	testServer.router.POST("/shorten", testServer.shortenUrl)
+	testServer.addRouteHandlers()
 
 	return &testServer
 }
