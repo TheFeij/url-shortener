@@ -3,18 +3,18 @@ package util
 import "math/rand"
 
 const (
-	Lowercase = "abcdefghijklmnopqrstuvwxyz"
-	Uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	Numbers   = "0123456789"
+	lowercase = "abcdefghijklmnopqrstuvwxyz"
+	uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	numbers   = "0123456789"
 )
 
 // GenerateShortUrl generates a random string with the size of six characters
 // character set is lowercase and uppercase alphabets and numbers
 func GenerateShortUrl() string {
-	return generateRandomString(6, Lowercase+Uppercase+Numbers)
+	return generateRandomString(6, lowercase+uppercase+numbers)
 }
 
-// GenerateRandomString generates a random string with the given length
+// generateRandomString generates a random string with the given length
 func generateRandomString(length int, characterSet string) string {
 	charSetLength := len(characterSet)
 

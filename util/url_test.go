@@ -14,7 +14,7 @@ func TestGenerateShortUrl(t *testing.T) {
 
 // TestGenerateRandomString tests GenerateRandomString
 func TestGenerateRandomString(t *testing.T) {
-	randomString := generateRandomString(6, Lowercase+Uppercase+Numbers)
+	randomString := generateRandomString(6, lowercase+uppercase+numbers)
 	require.NotEmpty(t, randomString)
 	require.Len(t, randomString, 6)
 }
