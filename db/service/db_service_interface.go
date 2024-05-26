@@ -1,4 +1,4 @@
-package store
+package service
 
 // DBService defines methods to interact with the database
 type DBService interface {

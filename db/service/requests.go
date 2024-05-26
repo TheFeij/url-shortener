@@ -1,6 +1,6 @@
-package store
+package service
 
-// SaveUrlRequest represents a store request to save an url record into
+// SaveUrlRequest represents a service request to save an url record into
 // the urls table in the database
 type SaveUrlRequest struct {
 	// OriginalUrl client's original url (long url)

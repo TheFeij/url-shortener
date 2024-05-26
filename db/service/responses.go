@@ -1,4 +1,4 @@
-package store
+package service
 
 // SaveUrlResponse represents the response to a SaveUrlRequest
 type SaveUrlResponse struct {
