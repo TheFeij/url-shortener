@@ -48,7 +48,7 @@ Configuration is managed via a `config.json` file. Here is an example configurat
 
 ```json
 {
-   "DATABASE_ADDRESS": "postgresql://****:****@localhost:5432/url_shortener?sslmode=disable",
+   "DATABASE_ADDRESS": "postgresql://root:1234@localhost:5432/url_shortener?sslmode=disable",
    "SERVER_ADDRESS": ":8080"
 }
 ```
@@ -56,7 +56,7 @@ Configuration is managed via a `config.json` file. Here is an example configurat
 ## Usage
 
 ### Shorten a URL
-Send a POST request to /shorten with the URL to be shortened.
+Send a POST request to /links with the URL to be shortened.
 
 Request:
 ```json
@@ -68,7 +68,7 @@ Request:
 Response:
 ```json
 {
-   "short_url": "http://localhost:8080/abc123"
+   "short_url": "http://localhost:8080/links/abc123"
 }
 ```
 
@@ -76,5 +76,5 @@ Response:
 Access the shortened URL in the browser or via a GET request to be redirected.
 
 ## API Endpoints
-- POST /shorten: Shorten a URL.
-- GET /:shortUrl: Redirect to the original URL
+- POST /links: Shorten a URL.
+- GET /links/:shortUrl: Redirect to the original URL
