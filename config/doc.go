@@ -12,7 +12,7 @@ Example:
 
 	import (
 	    "fmt"
-	    "path/to/your/project/config"
+	    "url-shortener/config"
 	)
 
 	func main() {

@@ -3,7 +3,6 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"
-	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -43,15 +42,24 @@ func newTestServer(dbService service.DBService) *server {
 func TestHomePage(t *testing.T) {
 	server := newTestServer(nil)
 
-	req, err := http.NewRequest(http.MethodGet, "/", nil)
+	req, err := http.NewRequest(http.MethodGet, "/home", nil)
 	require.NoError(t, err)
 
 	recorder := httptest.NewRecorder()
 
 	server.router.ServeHTTP(recorder, req)
-	require.Equal(t, http.StatusOK, recorder.Code)
+	require.Equal(t, http.StatusMovedPermanently, recorder.Code)
+}
 
-	body, err := io.ReadAll(recorder.Body)
+// TestAnyRoute tests NoRoute handler of the api server
+func TestNoRoute(t *testing.T) {
+	server := newTestServer(nil)
+
+	req, err := http.NewRequest(http.MethodGet, "/invalidroute", nil)
 	require.NoError(t, err)
-	require.Equal(t, "Welcome!", string(body))
+
+	recorder := httptest.NewRecorder()
+
+	server.router.ServeHTTP(recorder, req)
+	require.Equal(t, http.StatusPermanentRedirect, recorder.Code)
 }

@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"sync"
@@ -30,6 +31,15 @@ func Init(dbService service.DBService, address string) {
 		router.Use(gin.Recovery())
 		router.Use(gin.Logger())
 
+		// CORS middleware configuration
+		config := cors.DefaultConfig()
+		config.AllowOrigins = []string{"*"}
+		config.AllowMethods = []string{"GET", "POST", "OPTIONS"}
+		config.AllowHeaders = []string{"Origin", "Content-Type"}
+
+		// use the CORS middleware with the custom configuration
+		router.Use(cors.New(config))
+
 		// initialize singleton server object
 		apiServer = server{
 			router:    router,
@@ -44,11 +54,17 @@ func Init(dbService service.DBService, address string) {
 
 // addRouteHandlers add route handlers to apiServer's router
 func (s *server) addRouteHandlers() {
-	s.router.GET("/", func(context *gin.Context) {
-		context.String(http.StatusOK, "Welcome!")
+	// Define API routes
+	s.router.POST("/links", s.shortenUrl)
+	s.router.GET("/links/:short_url", s.redirectShortUrl)
+
+	// Set up static files using the Static method
+	s.router.Static("/home", "./static")
+
+	// Handle requests that don't match any defined routes
+	s.router.NoRoute(func(c *gin.Context) {
+		c.Redirect(http.StatusPermanentRedirect, "/home")
 	})
-	s.router.POST("/shorten", s.shortenUrl)
-	s.router.GET("/redirect/:short_url", s.redirectShortUrl)
 }
 
 // GetServer returns singleton instance of server
