@@ -45,7 +45,7 @@ func (s *server) redirectShortUrl(context *gin.Context) {
 
 	// get the request uri
 	if err := context.ShouldBindUri(&req); err != nil {
-		context.JSON(http.StatusBadRequest, errResponse(err))
+		context.Status(http.StatusBadRequest)
 		return
 	}
 
@@ -53,11 +53,11 @@ func (s *server) redirectShortUrl(context *gin.Context) {
 	res, err := s.dbService.GetOriginalUrl(service.NewGetOriginalUrlRequest(req.ShortUrl))
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			context.JSON(http.StatusNotFound, "url does not exist")
+			context.Status(http.StatusNotFound)
 			return
 		}
 
-		context.JSON(http.StatusInternalServerError, errResponse(err))
+		context.Status(http.StatusInternalServerError)
 		return
 	}
 
