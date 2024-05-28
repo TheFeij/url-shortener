@@ -51,7 +51,15 @@ func TestHomePage(t *testing.T) {
 	require.Equal(t, http.StatusMovedPermanently, recorder.Code)
 }
 
-	body, err := io.ReadAll(recorder.Body)
+// TestAnyRoute tests NoRoute handler of the api server
+func TestNoRoute(t *testing.T) {
+	server := newTestServer(nil)
+
+	req, err := http.NewRequest(http.MethodGet, "/invalidroute", nil)
 	require.NoError(t, err)
-	require.Equal(t, "Welcome!", string(body))
+
+	recorder := httptest.NewRecorder()
+
+	server.router.ServeHTTP(recorder, req)
+	require.Equal(t, http.StatusPermanentRedirect, recorder.Code)
 }
