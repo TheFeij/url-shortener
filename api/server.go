@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"sync"
 	"url-shortener/db/service"
 )
@@ -56,6 +57,14 @@ func (s *server) addRouteHandlers() {
 	// Define API routes
 	s.router.POST("/links", s.shortenUrl)
 	s.router.GET("/links/:short_url", s.redirectShortUrl)
+
+	// Set up static files using the Static method
+	s.router.Static("/home", "./static")
+
+	// Handle requests that don't match any defined routes
+	s.router.NoRoute(func(c *gin.Context) {
+		c.Redirect(http.StatusPermanentRedirect, "/home")
+	})
 }
 
 // GetServer returns singleton instance of server
