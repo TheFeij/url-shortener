@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"sync"
@@ -29,6 +30,15 @@ func Init(dbService service.DBService, address string) {
 		// add middlewares
 		router.Use(gin.Recovery())
 		router.Use(gin.Logger())
+
+		// CORS middleware configuration
+		config := cors.DefaultConfig()
+		config.AllowOrigins = []string{"*"}
+		config.AllowMethods = []string{"GET", "POST", "OPTIONS"}
+		config.AllowHeaders = []string{"Origin", "Content-Type"}
+
+		// use the CORS middleware with the custom configuration
+		router.Use(cors.New(config))
 
 		// initialize singleton server object
 		apiServer = server{
