@@ -135,7 +135,7 @@ func TestShortenUrl(t *testing.T) {
 			require.NoError(t, err)
 
 			// create http request
-			httpReq, err := http.NewRequest(http.MethodPost, "/shorten", bytes.NewBuffer(requestBody))
+			httpReq, err := http.NewRequest(http.MethodPost, "/links", bytes.NewBuffer(requestBody))
 
 			recorder := httptest.NewRecorder()
 			require.NotEmpty(t, recorder)
@@ -240,7 +240,7 @@ func TestRedirectShortUrl(t *testing.T) {
 			server := newTestServer(dbService)
 
 			// create http request
-			url := fmt.Sprintf("/redirect/%s", testCase.req.ShortUrl)
+			url := fmt.Sprintf("/links/%s", testCase.req.ShortUrl)
 			httpReq, err := http.NewRequest(http.MethodGet, url, nil)
 			require.NoError(t, err)
 
