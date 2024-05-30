@@ -28,14 +28,14 @@ Send a POST request to /links with the URL to be shortened.
 Request:
 ```json
 {
-  "url": "http://example.com"
+  "url": "https://www.google.com/search?q=long+url&oq=long+url&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQABiABDIJCAIQABgKGIAEMgcIAxAuGIAEMgcIBBAuGIAEMgcIBRAAGIAEMgcIBhAAGIAEMgcIBxAAGIAEMgcICBAAGIAEMgcICRAAGIAE0gEIMTgzNmowajeoAgCwAgA&sourceid=chrome&ie=UTF-8"
 }
 ```
 
 Response:
 ```json
 {
-   "short_url": "http://localhost:8080/links/abc123"
+   "short_url": "https://thefeij-url-shortener.liara.run/links/VzT9h5"
 }
 ```
 
