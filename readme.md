@@ -19,8 +19,10 @@ This project is a URL shortener service implemented in Golang. It allows users t
 
 ## Features
 
+REST APIs for:
 - Shorten long URLs
 - Redirect to the original URL using the shortened URL
+
 
 ## Usage
 
