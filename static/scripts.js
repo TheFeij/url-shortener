@@ -6,7 +6,7 @@ document.getElementById('shorten-form').addEventListener('submit', function(even
     // Clear previous results
     resultDiv.innerHTML = '';
 
-    fetch('http://127.0.0.1:8080/links', {
+    fetch('https://thefeij-url-shortener.liara.run/links', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -21,7 +21,7 @@ document.getElementById('shorten-form').addEventListener('submit', function(even
         })
         .then(data => {
             if (data.short_url) {
-                const shortenedUrl = 'http://localhost:8080/links/' + data.short_url;
+                const shortenedUrl = 'https://thefeij-url-shortener.liara.run/links/' + data.short_url;
                 resultDiv.innerHTML = `<p>Shortened URL: <a href="${shortenedUrl}" target="_blank">${shortenedUrl}</a></p>`;
             } else {
                 resultDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
