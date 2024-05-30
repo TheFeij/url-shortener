@@ -19,39 +19,6 @@ This project is a URL shortener service implemented in Golang. It allows users t
 
 - Shorten long URLs
 - Redirect to the original URL using the shortened URL
-- RESTful API
-
-## Getting Started
-
-
-### Installation
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/TheFeij/url-shortener.git
-    cd url-shortener
-    ```
-
-2. Install dependencies:
-    ```bash
-    go mod tidy
-    ```
-
-3. Start the server:
-    ```bash
-    make start
-    ```
-
-## Configuration
-
-Configuration is managed via a `config.json` file. Here is an example configuration:
-
-```json
-{
-   "DATABASE_ADDRESS": "postgresql://root:1234@localhost:5432/url_shortener?sslmode=disable",
-   "SERVER_ADDRESS": ":8080"
-}
-```
 
 ## Usage
 
