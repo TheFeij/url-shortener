@@ -1,6 +1,10 @@
 # URL Shortener
 
-A simple URL shortener service built with Golang.
+A URL shortener service built with Golang. 
+
+
+![Home Page Screenshot](./assets/home-page-screenshot.png)
+Website: https://thefeij-url-shortener.liara.run
 
 ## Table of Contents
 
